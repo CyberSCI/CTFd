@@ -294,7 +294,7 @@ def register():
         if valid_website is False:
             errors.append("Websites must be a proper URL starting with http or https")
         if valid_country is False:
-            errors.append("Invalid country")
+            errors.append("Invalid region")
         if valid_affiliation is False:
             errors.append("Please provide a shorter affiliation")
         if valid_bracket is False:

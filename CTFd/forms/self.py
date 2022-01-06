@@ -18,6 +18,7 @@ from CTFd.utils.user import get_current_user, get_current_user_attrs
 
 def SettingsForm(*args, **kwargs):
     class _SettingsForm(BaseForm):
+<<<<<<< HEAD
         name = StringField(_l("User Name"))
         email = StringField(_l("Email"))
         language = SelectField(_l("Language"), choices=SELECT_LANGUAGE_LIST)
@@ -27,6 +28,16 @@ def SettingsForm(*args, **kwargs):
         website = URLField(_l("Website"))
         country = SelectField(_l("Country"), choices=SELECT_COUNTRIES_LIST)
         submit = SubmitField(_l("Submit"))
+=======
+        name = StringField("User Name")
+        email = StringField("Email")
+        password = PasswordField("Password")
+        confirm = PasswordField("Current Password")
+        affiliation = StringField("Affiliation")
+        website = URLField("Website")
+        country = SelectField("Region", choices=SELECT_COUNTRIES_LIST)
+        submit = SubmitField("Submit")
+>>>>>>> 4a1b679f (More changes to support regions)
 
         @property
         def extra(self):

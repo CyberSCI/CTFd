@@ -182,7 +182,7 @@ class UserBaseForm(BaseForm):
     password = PasswordField("Password")
     website = StringField("Website")
     affiliation = StringField("Affiliation")
-    country = SelectField("Country", choices=SELECT_COUNTRIES_LIST)
+    country = SelectField("Region", choices=SELECT_COUNTRIES_LIST)
     type = SelectField("Type", choices=[("user", "User"), ("admin", "Admin")])
     verified = BooleanField("Verified")
     hidden = BooleanField("Hidden")

@@ -146,9 +146,13 @@ def TeamSettingsForm(*args, **kwargs):
             _l("Website"),
             description=_l("Your team's website publicly shown to other competitors"),
         )
-        country = StringField(
+        country = SelectField(
             "Region",
+<<<<<<< HEAD
             choices=SELECT_REGIONS_LIST,
+=======
+            choices=SELECT_COUNTRIES_LIST,
+>>>>>>> 4a1b679f (More changes to support regions)
             description="Your team's region publicly shown to other competitors",
         )
         submit = SubmitField(_l("Submit"))

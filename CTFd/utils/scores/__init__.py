@@ -85,8 +85,12 @@ def get_standings(count=None, bracket_id=None, admin=False, fields=None):
                 Model.id.label("account_id"),
                 Model.oauth_id.label("oauth_id"),
                 Model.name.label("name"),
+<<<<<<< HEAD
                 Model.bracket_id.label("bracket_id"),
                 Brackets.name.label("bracket_name"),
+=======
+                Model.country.label("country"),
+>>>>>>> 4a1b679f (More changes to support regions)
                 Model.hidden,
                 Model.banned,
                 sumscores.columns.score,
@@ -106,8 +110,12 @@ def get_standings(count=None, bracket_id=None, admin=False, fields=None):
                 Model.id.label("account_id"),
                 Model.oauth_id.label("oauth_id"),
                 Model.name.label("name"),
+<<<<<<< HEAD
                 Model.bracket_id.label("bracket_id"),
                 Brackets.name.label("bracket_name"),
+=======
+                Model.country.label("country"),
+>>>>>>> 4a1b679f (More changes to support regions)
                 sumscores.columns.score,
                 *fields,
             )

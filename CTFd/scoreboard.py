@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template
+from collections import OrderedDict
 
-from CTFd.utils import config
+from CTFd.utils import config, get_config
 from CTFd.utils.config.visibility import scores_visible
 from CTFd.utils.decorators.visibility import (
     check_account_visibility,
@@ -9,10 +10,12 @@ from CTFd.utils.decorators.visibility import (
 from CTFd.utils.helpers import get_infos
 from CTFd.utils.scores import get_standings
 from CTFd.utils.user import is_admin
+from CTFd.utils.countries import get_countries
 from CTFd.models import Teams, db
 
 scoreboard = Blueprint("scoreboard", __name__)
 
+OVERALL = "Overall"
 
 @scoreboard.route("/scoreboard")
 @check_account_visibility
@@ -28,32 +31,28 @@ def listing():
 
     standings = get_standings()
 
-    from CTFd.utils import get_config
-
     user_mode = get_config("user_mode")
     if user_mode == "teams":
-        # Bucket the teams
-        # "ATL", "MTL", "OTT", "TOR", "CGY", "VAN"
 
-        bucket = {
-            "Overall": [],
-            "ATL": [],
-            "CGY": [],
-            "MTL": [],
-            "OTT": [],
-            "TOR": [],
-            "VAN": []
-        }
+        # Create an ordered list of team region buckets (so that they could be rendered East to West on the screen)
+        buckets = OrderedDict()
+        buckets[OVERALL] = []
+
+        # We hijacked "country" field to mean "region"
+        for region in get_countries():
+            buckets[region] = []
+
         for team in standings:
-            teamref = db.session.query(Teams).filter_by(id=team.account_id).first()
-            if teamref:
-                if teamref.country not in bucket:
-                    bucket[teamref.country] = []
+            buckets[OVERALL].append(team)
 
-                bucket[teamref.country].append(team)
-                bucket["Overall"].append(team)
+            # Throw away any team with an invalid region, they will have to set the right region in the team settings
+            # in order to show up in the right scoreboard region (note that once they change the region, for some 
+            # reason it takes a bit of time to be reflected in the scoreboard)
+            if team.country not in buckets or team.country == OVERALL:
+                continue
+            buckets[team.country].append(team)
 
-        return render_template("scoreboard.html", buckets=bucket, infos=infos)
+        return render_template("scoreboard.html", buckets=buckets, infos=infos)
     
     else:
         return render_template("scoreboard.html", standings=standings, infos=infos)
