@@ -53,6 +53,5 @@ def listing():
             buckets[team.country].append(team)
 
         return render_template("scoreboard.html", buckets=buckets, infos=infos)
-    
     else:
         return render_template("scoreboard.html", standings=standings, infos=infos)

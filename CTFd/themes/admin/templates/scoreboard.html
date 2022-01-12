@@ -19,40 +19,99 @@
 		</div>
 	</div>
 
-	{% if Configs.user_mode == UserModeTypes.TEAMS %}
-	<div class="row pb-4">
+	{% if standings %}
+	<div id="scoreboard" class="row">
 		<div class="col-md-12">
-			<ul class="nav nav-tabs nav-fill" role="tablist">
-				<li class="nav-item">
-					<a class="nav-link active" data-toggle="tab" href="#standings" role="tab">
-						Teams
-					</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" data-toggle="tab" href="#user-standings" role="tab">
-						Users
-					</a>
-				</li>
-			</ul>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<td scope="col" width="10px"><b>Place</b></td>
+						<td scope="col"><b>{{ get_mode_as_word(capitalize=True) }}</b></td>
+						<td scope="col"><b>Score</b></td>
+					</tr>
+				</thead>
+				<tbody>
+				{% for standing in standings %}
+					<tr>
+						<th scope="row" class="text-center">{{ loop.index }}</th>
+						<td>
+							<a href="{{ generate_account_url(standing.account_id) }}">
+								{{ standing.name | truncate(50) }}
+
+								{% if standing.oauth_id %}
+									{% if Configs.user_mode == 'teams' %}
+									<a href="https://majorleaguecyber.org/t/{{ standing.name }}">
+										<span class="badge badge-primary">Official</span>
+									</a>
+									{% elif Configs.user_mode == 'users' %}
+									<a href="https://majorleaguecyber.org/u/{{ standing.name }}">
+										<span class="badge badge-primary">Official</span>
+									</a>
+									{% endif %}
+								{% endif %}
+							</a>
+						</td>
+						<td>{{ standing.score }}</td>
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
 		</div>
 	</div>
 	{% endif %}
+	{% if buckets %}
+	<nav id="scoreboard-buckets" class="nav nav-tabs nav-fill" role="tablist">
+		{% for bucket in buckets.keys() %}
+		<a class="nav-item nav-link" data-toggle="tab" href="#{{ bucket }}" role="tab">
+			{{ bucket}}
+		</a>
+		{% endfor %}
+	</nav>
+	<div id="nav-tabContent" class="tab-content">
+		{% for bucket in buckets %}
+		{% if bucket == 'Overall' %}
+		<div id="{{ bucket }}" class="tab-pane fade show active">
+		{% else %}
+		<div id="{{ bucket }}" class="tab-pane fade">
+		{% endif %}
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<td scope="col" width="10px"><b>Place</b></td>
+						<td scope="col"><b>{{ get_mode_as_word(capitalize=True) }}</b></td>
+						<td scope="col"><b>Score</b></td>
+					</tr>
+				</thead>
+				<tbody>
+					{% for standing in buckets[bucket] %}
+					<tr>
+						<th scope="row" class="text-center">{{ loop.index }}</th>
+						<td>
+							<a href="{{ generate_account_url(standing.account_id) }}">
+								{{ standing.name | truncate(50) }}
 
-	<div class="row">
-		<div class="col-md-12 table-responsive">
-			<div class="tab-content">
-				<div class="tab-pane fade show active" id="standings" role="tabpanel">
-					{% include "admin/scoreboard/standings.html" %}
-				</div>
-				{% if Configs.user_mode == UserModeTypes.TEAMS %}
-				<div class="tab-pane fade" id="user-standings" role="tabpanel">
-					{% include "admin/scoreboard/users.html" %}
-				</div>
-				{% endif %}
-			</div>
+								{% if standing.oauth_id %}
+									{% if Configs.user_mode == 'teams' %}
+									<a href="https://majorleaguecyber.org/t/{{ standing.name }}">
+										<span class="badge badge-primary">Official</span>
+									</a>
+									{% elif Configs.user_mode == 'users' %}
+									<a href="https://majorleaguecyber.org/u/{{ standing.name }}">
+										<span class="badge badge-primary">Official</span>
+									</a>
+									{% endif %}
+								{% endif %}
+							</a>
+						</td>
+						<td>{{ standing.score }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
 		</div>
+		{% endfor %}
 	</div>
-</div>
+	{% endif %}
 {% endblock %}
 
 {% block scripts %}
