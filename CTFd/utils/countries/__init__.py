@@ -7,7 +7,7 @@ COUNTRIES_LIST = [
     ("MTL", "Montreal"),
     ("OTT", "Ottawa"),
     ("TOR", "Toronto"),
-    ("CAL", "Calgary"),
+    ("CGY", "Calgary"),
     ("VAN", "Vancouver"),
 ]
 
