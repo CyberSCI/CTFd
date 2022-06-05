@@ -187,7 +187,7 @@ class ChallengeList(Resource):
                                 "value": 0,
                                 "solves": None,
                                 "solved_by_me": False,
-                                "category": "???",
+                                "category": challenge.category,
                                 "tags": [],
                                 "template": "",
                                 "script": "",
