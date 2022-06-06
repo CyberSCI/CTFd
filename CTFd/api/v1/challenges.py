@@ -159,7 +159,18 @@ class ChallengeList(Resource):
             # `None` for the solve count if visiblity checks fail
             solve_count_dfl = None
 
-        chal_q = get_all_challenges(admin=admin_view, field=field, q=q, **query_args)
+        # Build the query for the challenges which may be listed
+        chal_q = Challenges.query
+        # Admins can see hidden and locked challenges in the admin view
+        if admin_view is False:
+            chal_q = chal_q.filter(
+                and_(Challenges.state != "hidden", Challenges.state != "locked")
+            )
+        chal_q = (
+            chal_q.filter_by(**query_args)
+            .filter(*filters)
+            .order_by(Challenges.category.desc(), Challenges.value, Challenges.id)
+        )
 
         # Iterate through the list of challenges, adding to the object which
         # will be JSONified back to the client
@@ -184,7 +195,7 @@ class ChallengeList(Resource):
                                 "id": challenge.id,
                                 "type": "hidden",
                                 "name": "???",
-                                "value": 0,
+                                "value": challenge.value,
                                 "solves": None,
                                 "solved_by_me": False,
                                 "category": challenge.category,
