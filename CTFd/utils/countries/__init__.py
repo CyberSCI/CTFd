@@ -3,7 +3,7 @@
 from collections import OrderedDict
 
 COUNTRIES_LIST = [
-    ("STJ", "Saint John"),
+    ("ATL", "Atlantic"),
     ("MTL", "Montreal"),
     ("OTT", "Ottawa"),
     ("TOR", "Toronto"),
