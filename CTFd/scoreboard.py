@@ -9,6 +9,7 @@ from CTFd.utils.decorators.visibility import (
 from CTFd.utils.helpers import get_infos
 from CTFd.utils.scores import get_standings
 from CTFd.utils.user import is_admin
+from CTFd.models import Teams, db
 
 scoreboard = Blueprint("scoreboard", __name__)
 
@@ -26,4 +27,33 @@ def listing():
         infos.append("Scores are not currently visible to users")
 
     standings = get_standings()
-    return render_template("scoreboard.html", standings=standings, infos=infos)
+
+    from CTFd.utils import get_config
+
+    user_mode = get_config("user_mode")
+    if user_mode == "teams":
+        # Bucket the teams
+        # "ATL", "MTL", "OTT", "TOR", "CGY", "VAN"
+
+        bucket = {
+            "Overall": [],
+            "ATL": [],
+            "CGY": [],
+            "MTL": [],
+            "OTT": [],
+            "TOR": [],
+            "VAN": []
+        }
+        for team in standings:
+            teamref = db.session.query(Teams).filter_by(id=team.account_id).first()
+            if teamref:
+                if teamref.country not in bucket:
+                    bucket[teamref.country] = []
+
+                bucket[teamref.country].append(team)
+                bucket["Overall"].append(team)
+
+        return render_template("scoreboard.html", buckets=bucket, infos=infos)
+    
+    else:
+        return render_template("scoreboard.html", standings=standings, infos=infos)

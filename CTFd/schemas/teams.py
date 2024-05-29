@@ -47,7 +47,7 @@ class TeamSchema(ma.ModelSchema):
             else True
         ],
     )
-    country = field_for(Teams, "country", validate=[validate_country_code])
+    country = field_for(Teams, "country")
     bracket_id = field_for(Teams, "bracket_id")
     fields = Nested(
         TeamFieldEntriesSchema, partial=True, many=True, attribute="field_entries"

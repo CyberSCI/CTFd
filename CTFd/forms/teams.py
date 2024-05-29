@@ -6,7 +6,7 @@ from wtforms.validators import InputRequired
 from CTFd.forms import BaseForm
 from CTFd.forms.fields import SubmitField
 from CTFd.models import Brackets, TeamFieldEntries, TeamFields
-from CTFd.utils.countries import SELECT_COUNTRIES_LIST
+from CTFd.utils.cybersci_regions import SELECT_REGIONS_LIST
 from CTFd.utils.user import get_current_team
 
 
@@ -146,10 +146,10 @@ def TeamSettingsForm(*args, **kwargs):
             _l("Website"),
             description=_l("Your team's website publicly shown to other competitors"),
         )
-        country = SelectField(
-            _l("Country"),
-            choices=SELECT_COUNTRIES_LIST,
-            description=_l("Your team's country publicly shown to other competitors"),
+        country = StringField(
+            "Region",
+            choices=SELECT_REGIONS_LIST,
+            description="Your team's region publicly shown to other competitors",
         )
         submit = SubmitField(_l("Submit"))
 
@@ -226,15 +226,15 @@ class PublicTeamSearchForm(BaseForm):
 
 
 class TeamBaseForm(BaseForm):
-    name = StringField(_l("Team Name"), validators=[InputRequired()])
-    email = EmailField(_l("Email"))
-    password = PasswordField(_l("Password"))
-    website = URLField(_l("Website"))
-    affiliation = StringField(_l("Affiliation"))
-    country = SelectField(_l("Country"), choices=SELECT_COUNTRIES_LIST)
-    hidden = BooleanField(_l("Hidden"))
-    banned = BooleanField(_l("Banned"))
-    submit = SubmitField(_l("Submit"))
+    name = StringField("Team Name", validators=[InputRequired()])
+    email = EmailField("Email")
+    password = PasswordField("Password")
+    website = URLField("Website")
+    affiliation = StringField("Affiliation")
+    country = SelectField("Region", choices=SELECT_COUNTRIES_LIST)
+    hidden = BooleanField("Hidden")
+    banned = BooleanField("Banned")
+    submit = SubmitField("Submit")
 
 
 def TeamCreateForm(*args, **kwargs):
