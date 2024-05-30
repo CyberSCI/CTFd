@@ -168,7 +168,6 @@ class ChallengeList(Resource):
             )
         chal_q = (
             chal_q.filter_by(**query_args)
-            .filter(*filters)
             .order_by(Challenges.category.desc(), Challenges.value, Challenges.id)
         )
 
