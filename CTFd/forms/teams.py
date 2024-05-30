@@ -231,7 +231,7 @@ class TeamBaseForm(BaseForm):
     password = PasswordField("Password")
     website = URLField("Website")
     affiliation = StringField("Affiliation")
-    country = SelectField("Region", choices=SELECT_COUNTRIES_LIST)
+    country = SelectField("Region", choices=SELECT_REGIONS_LIST)
     hidden = BooleanField("Hidden")
     banned = BooleanField("Banned")
     submit = SubmitField("Submit")
