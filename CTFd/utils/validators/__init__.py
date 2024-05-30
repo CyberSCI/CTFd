@@ -40,3 +40,10 @@ def validate_country_code(country_code):
         return
     if lookup_country_code(country_code) is None:
         raise ValidationError("Invalid Region")
+
+
+def validate_language(language):
+    if language.strip() == "":
+        return
+    if LANGUAGE_NAMES.get(language) is None:
+        raise ValidationError("Invalid Language")
