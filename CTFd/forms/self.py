@@ -13,19 +13,21 @@ from CTFd.forms.users import (
     build_user_bracket_field,
 )
 from CTFd.utils.countries import SELECT_COUNTRIES_LIST
+from CTFd.utils.cybersci_regions import SELECT_REGIONS_LIST
 from CTFd.utils.user import get_current_user, get_current_user_attrs
 
 
 def SettingsForm(*args, **kwargs):
     class _SettingsForm(BaseForm):
-        name = StringField("User Name")
-        email = StringField("Email")
-        password = PasswordField("Password")
-        confirm = PasswordField("Current Password")
-        affiliation = StringField("Affiliation")
-        website = URLField("Website")
-        country = SelectField("Region", choices=SELECT_COUNTRIES_LIST)
-        submit = SubmitField("Submit")
+        name = StringField(_l("User Name"))
+        email = StringField(_l("Email"))
+        language = SelectField(_l("Language"), choices=SELECT_LANGUAGE_LIST)
+        password = PasswordField(_l("Password"))
+        confirm = PasswordField(_l("Current Password"))
+        affiliation = StringField(_l("Affiliation"))
+        website = URLField(_l("Website"))
+        country = SelectField("Region", choices=SELECT_REGIONS_LIST)
+        submit = SubmitField(_l("Submit"))
 
         @property
         def extra(self):
